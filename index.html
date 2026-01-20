@@ -5,102 +5,80 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sajidul ❤️ Sagira</title>
   <style>
-    /* Basic Reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Arial', sans-serif; }
+    body { background: linear-gradient(135deg, #ffe6f0, #ffd6e8); color: #333; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:20px; overflow-x:hidden; position:relative; }
 
-    body {
-      background: linear-gradient(135deg, #ffe6f0, #ffd6e8);
-      color: #333;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
+    .hidden { display:none; }
+    h1 { font-size:3em; color:#e91e63; text-align:center; margin-bottom:10px; }
+    h2 { font-size:1.5em; color:#ff4081; text-align:center; margin-bottom:20px; }
+    p { font-size:1.2em; margin:10px 0; text-align:center; }
 
-    .hidden { display: none; }
+    .countdown-title { font-size:1.5em; color:#c2185b; margin-bottom:10px; text-align:center; }
 
-    h1 { font-size: 3em; color: #e91e63; text-align: center; margin-bottom: 10px; }
-    h2 { font-size: 1.5em; color: #ff4081; text-align: center; margin-bottom: 20px; }
-    p { font-size: 1.2em; margin: 10px 0; text-align: center; }
+    .countdown { display:flex; justify-content:center; gap:20px; font-weight:bold; margin:20px 0; }
+    .countdown div { background:#ff80ab; padding:10px 20px; border-radius:10px; color:white; }
 
-    /* Countdown Timer */
-    .countdown { display: flex; justify-content: center; gap: 20px; font-weight: bold; margin: 20px 0; }
-    .countdown div { background: #ff80ab; padding: 10px 20px; border-radius: 10px; color: white; }
+    /* Love Notes Animation */
+    #love-note { font-style:italic; margin:20px 0; font-size:1.3em; color:#c2185b; opacity:0; transition: opacity 1s; }
 
-    /* Love Notes */
-    #love-note { font-style: italic; margin: 20px 0; font-size: 1.3em; color: #c2185b; }
+    #favorite-song { margin:20px 0; font-size:1.3em; color:#e91e63; cursor:pointer; text-decoration:underline; }
 
-    /* Audio Player */
-    audio { margin: 20px 0; outline: none; }
-
-    /* Surprise Button */
-    #surprise-btn {
-      background: #e91e63; color: white; padding: 15px 30px; border: none;
-      border-radius: 25px; font-size: 1.2em; cursor: pointer; margin: 20px 0;
-      transition: transform 0.2s;
-    }
+    #surprise-btn { background:#e91e63; color:white; padding:15px 30px; border:none; border-radius:25px; font-size:1.2em; cursor:pointer; margin:20px 0; transition: transform 0.2s; }
     #surprise-btn:hover { transform: scale(1.1); }
 
-    /* Heart Animation */
-    .heart {
-      position: fixed;
-      width: 20px;
-      height: 20px;
-      background: red;
-      transform: rotate(45deg);
-      animation: floatUp 2s linear forwards;
-    }
-    .heart::before,
-    .heart::after {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: red;
-      border-radius: 50%;
-    }
-    .heart::before { top: -10px; left: 0; }
-    .heart::after { left: 10px; top: 0; }
+    /* Floating Hearts */
+    .bg-heart { position: fixed; width:15px; height:15px; background:red; transform:rotate(45deg); opacity:0.6; border-radius:5px; animation: floatBg 10s linear infinite; z-index:0; }
+    .bg-heart::before, .bg-heart::after { content:""; position:absolute; width:15px; height:15px; background:red; border-radius:50%; }
+    .bg-heart::before { top:-7.5px; left:0; }
+    .bg-heart::after { left:7.5px; top:0; }
+    @keyframes floatBg { 0%{ transform:translateY(100vh) rotate(45deg); } 100%{ transform:translateY(-10vh) rotate(45deg); } }
 
-    @keyframes floatUp {
-      0% { transform: translateY(0) rotate(45deg); opacity: 1; }
-      100% { transform: translateY(-300px) rotate(45deg); opacity: 0; }
-    }
+    /* Surprise Heart Animation */
+    .heart { position: fixed; width:20px; height:20px; background:red; transform:rotate(45deg); animation: floatUp 2s linear forwards; z-index:100; }
+    .heart::before, .heart::after { content:""; position:absolute; width:20px; height:20px; background:red; border-radius:50%; }
+    .heart::before { top:-10px; left:0; }
+    .heart::after { left:10px; top:0; }
+    @keyframes floatUp { 0%{ transform:translateY(0) rotate(45deg); opacity:1; } 100%{ transform:translateY(-300px) rotate(45deg); opacity:0; } }
 
     /* Password Overlay */
-    #password-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      z-index: 1000;
-      color: white;
-    }
-    #password-overlay input {
-      padding: 10px 20px; font-size: 1em; border-radius: 10px; border: none; margin: 10px 0;
-    }
-    #password-overlay button {
-      padding: 10px 20px; border-radius: 10px; border: none;
-      background: #ff4081; color: white; font-size: 1em; cursor: pointer;
-    }
+    #password-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:1000; color:white; }
+    #password-overlay input { padding:10px 20px; font-size:1em; border-radius:10px; border:none; margin:10px 0; }
+    #password-overlay button { padding:10px 20px; border-radius:10px; border:none; background:#ff4081; color:white; font-size:1em; cursor:pointer; }
 
-    /* Responsive */
-    @media(max-width: 600px){
-      h1 { font-size: 2em; }
-      h2 { font-size: 1.2em; }
-      .countdown div { padding: 8px 15px; }
-    }
+    /* Photo Gallery */
+    .gallery { display:grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap:15px; width:100%; max-width:800px; margin:20px 0; z-index:10; }
+    .gallery img { width:100%; border-radius:15px; cursor:pointer; transition: transform 0.5s, box-shadow 0.5s; }
+    .gallery img:hover { transform: scale(1.05); box-shadow:0 0 20px rgba(255,64,129,0.7); }
+
+    /* Lightbox Modal */
+    #modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:1002; }
+    #modal img { max-width:90%; max-height:90%; border-radius:15px; }
+    #modal span { position:absolute; top:20px; right:30px; font-size:2em; color:white; cursor:pointer; }
+
+    @media(max-width:600px){ h1{ font-size:2em;} h2{ font-size:1.2em;} .countdown div{ padding:8px 15px;} #favorite-song{ font-size:1.1em;} }
   </style>
 </head>
 <body>
+
+  <!-- Floating Background Hearts -->
+  <script>
+    for(let i=0;i<30;i++){
+      let h = document.createElement('div');
+      h.classList.add('bg-heart');
+      h.style.left = Math.random()*100+'vw';
+      h.style.animationDuration = 5+Math.random()*10+'s';
+      h.style.opacity = 0.3 + Math.random()*0.7;
+      h.style.width = h.style.height = 10 + Math.random()*15 + 'px';
+      document.body.appendChild(h);
+    }
+  </script>
 
   <!-- Password Overlay -->
   <div id="password-overlay">
     <h2>Enter Password to Open</h2>
     <input type="password" id="password-input" placeholder="Enter password">
     <button onclick="checkPassword()">Open</button>
-    <p id="password-msg" style="color: #ff8080; margin-top:10px;"></p>
+    <p id="password-msg" style="color:#ff8080; margin-top:10px;"></p>
   </div>
 
   <!-- Main Content -->
@@ -108,7 +86,7 @@
     <h1>Sajidul ❤️ Sagira</h1>
     <h2>Welcome to our special world 💖</h2>
 
-    <!-- Countdown -->
+    <div class="countdown-title">Next Anniversary</div>
     <div class="countdown">
       <div><span id="days"></span> Days</div>
       <div><span id="hours"></span> Hours</div>
@@ -116,73 +94,79 @@
       <div><span id="seconds"></span> Seconds</div>
     </div>
 
-    <!-- Love Notes -->
     <div id="love-note"></div>
 
-    <!-- Favorite Song -->
-    <audio controls>
-      <source src="https://www.youtube.com/watch?v=8SYPKQMW_2Q?si=avCSj2FEDHHA1X6v" type="audio/mpeg">
-      Your browser does not support the audio element.
-    </audio>
+    <div id="favorite-song" onclick="openSong()">Favorite Song 🎵</div>
 
-    <!-- Surprise Button -->
+    <!-- Photo Gallery -->
+    <div class="gallery">
+      <img src="images/pic1.jpg" alt="Memory 1" onclick="openModal(this.src)">
+      <img src="images/pic2.jpg" alt="Memory 2" onclick="openModal(this.src)">
+      <img src="images/pic3.jpg" alt="Memory 3" onclick="openModal(this.src)">
+    </div>
+
     <button id="surprise-btn" onclick="showHearts()">Click for a Surprise ❤️</button>
   </div>
 
+  <!-- Lightbox Modal -->
+  <div id="modal" onclick="closeModal()">
+    <span onclick="closeModal()">&times;</span>
+    <img id="modal-img" src="">
+  </div>
+
   <script>
-    // Password Protection
     function checkPassword() {
       const password = document.getElementById('password-input').value;
-      if(password === "SajidulandSagira"){
-        document.getElementById('password-overlay').style.display = 'none';
+      if(password==="SajidulandSagira"){
+        document.getElementById('password-overlay').style.display='none';
         document.getElementById('main-content').classList.remove('hidden');
-      } else {
-        document.getElementById('password-msg').innerText = "Wrong Password! Try again 💖";
-      }
+      }else{ document.getElementById('password-msg').innerText="Wrong Password! Try again 💖"; }
     }
 
-    // Countdown Timer
-    const anniversary = new Date("January 12, 2027 00:00:00").getTime();
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const diff = anniversary - now;
-      const days = Math.floor(diff / (1000*60*60*24));
-      const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-      const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
-      const seconds = Math.floor((diff % (1000*60)) / 1000);
-      document.getElementById('days').innerText = days;
-      document.getElementById('hours').innerText = hours;
-      document.getElementById('minutes').innerText = minutes;
-      document.getElementById('seconds').innerText = seconds;
+    // Countdown
+    const anniversary=new Date("January 12, 2027 00:00:00").getTime();
+    function updateCountdown(){
+      const now=new Date().getTime();
+      const diff=anniversary-now;
+      const days=Math.floor(diff/(1000*60*60*24));
+      const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+      const minutes=Math.floor((diff%(1000*60*60))/(1000*60));
+      const seconds=Math.floor((diff%(1000*60))/1000);
+      document.getElementById('days').innerText=days;
+      document.getElementById('hours').innerText=hours;
+      document.getElementById('minutes').innerText=minutes;
+      document.getElementById('seconds').innerText=seconds;
     }
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
+    setInterval(updateCountdown,1000); updateCountdown();
 
-    // Love Notes
-    const notes = [
-      "Tumhari muskurahat meri duniya ki sabse badi khushi hai.",
-      "Main har din bhagwan ka shukriya karta hoon ki unhone mujhe tumse milwaya.",
-      "Mere dil ke liye tum wo sukoon ho jo mujhe kahin aur nahi milta."
-    ];
-    let noteIndex = 0;
-    function showNote() {
-      document.getElementById('love-note').innerText = notes[noteIndex];
-      noteIndex = (noteIndex + 1) % notes.length;
+    // Love Notes with Fade
+    const notes=["Tumhari muskurahat meri duniya ki sabse badi khushi hai.","Main har din bhagwan ka shukriya karta hoon ki unhone mujhe tumse milwaya.","Mere dil ke liye tum wo sukoon ho jo mujhe kahin aur nahi milta."];
+    let noteIndex=0;
+    function showNote(){
+      const noteEl=document.getElementById('love-note');
+      noteEl.style.opacity=0;
+      setTimeout(()=>{ noteEl.innerText=notes[noteIndex]; noteEl.style.opacity=1; noteIndex=(noteIndex+1)%notes.length; },500);
     }
-    setInterval(showNote, 8000); // Change note every 8 sec
-    showNote();
+    setInterval(showNote,8000); showNote();
 
-    // Heart Surprise Animation
-    function showHearts() {
-      for(let i=0; i<30; i++){
-        const heart = document.createElement('div');
+    // Open YouTube
+    function openSong(){ window.open("https://youtu.be/8SYPKQMW_2Q?si=t-stu5nCL1N5S_Hd","_blank"); }
+
+    // Surprise Hearts
+    function showHearts(){
+      for(let i=0;i<30;i++){
+        const heart=document.createElement('div');
         heart.classList.add('heart');
-        heart.style.left = Math.random()*window.innerWidth + 'px';
-        heart.style.animationDuration = 2 + Math.random()*2 + 's';
+        heart.style.left=Math.random()*window.innerWidth+'px';
+        heart.style.animationDuration=2+Math.random()*2+'s';
         document.body.appendChild(heart);
-        setTimeout(() => { heart.remove(); }, 4000);
+        setTimeout(()=>{ heart.remove(); },4000);
       }
     }
+
+    // Modal Gallery
+    function openModal(src){ document.getElementById('modal-img').src=src; document.getElementById('modal').style.display='flex'; }
+    function closeModal(){ document.getElementById('modal').style.display='none'; }
   </script>
 </body>
 </html>
